@@ -78,6 +78,7 @@ public class BeerServiceImpl implements BeerService {
     public Beer saveNewBeer(Beer beer) {
         Beer savedBeer = Beer.builder()
                 .id(UUID.randomUUID())
+                .version(2)
                 .beerName(beer.getBeerName())
                 .beerStyle(beer.getBeerStyle())
                 .quantityOnHand(beer.getQuantityOnHand())

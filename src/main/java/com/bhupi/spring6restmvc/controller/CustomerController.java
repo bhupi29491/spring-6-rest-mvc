@@ -27,7 +27,7 @@ public class CustomerController {
 
     @GetMapping("{customerId}")
     public Customer getCustomerById(@PathVariable("customerId") UUID customerId) {
-        log.debug("Get Customer by Id  - In Controller");
+        log.debug("Get Customer by Id  - In CustomerController");
         return customerService.getCustomerById(customerId);
     }
 }

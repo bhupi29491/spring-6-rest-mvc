@@ -23,12 +23,14 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/customer")
 public class CustomerController {
+
+    public static final String CUSTOMER_PATH = "/api/v1/customer";
+    public static final String CUSTOMER_PATH_ID = CUSTOMER_PATH + "/{customerId}";
 
     private final CustomerService customerService;
 
-    @PatchMapping("{customerId}")
+    @PatchMapping(CUSTOMER_PATH_ID)
     public ResponseEntity patchCustomerById(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer) {
 
         customerService.patchCustomerById(customerId, customer);
@@ -36,13 +38,13 @@ public class CustomerController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("{customerId}")
+    @DeleteMapping(CUSTOMER_PATH_ID)
     public ResponseEntity deleteCustomerById(@PathVariable("customerId") UUID customerId) {
         customerService.deleteCustomerById(customerId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("{customerId}")
+    @PutMapping(CUSTOMER_PATH_ID)
     public ResponseEntity updateCustomerById(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer) {
 
         customerService.updateCustomerById(customerId, customer);
@@ -51,7 +53,7 @@ public class CustomerController {
     }
 
 
-    @PostMapping
+    @PostMapping(CUSTOMER_PATH)
     public ResponseEntity saveCustomer(@RequestBody Customer customer) {
          Customer savedCustomer = customerService.saveNewCustomer(customer);
 
@@ -61,12 +63,12 @@ public class CustomerController {
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping(CUSTOMER_PATH)
     public List<Customer> getAllCustomers(){
         return customerService.getAllCustomers();
     }
 
-    @GetMapping("{customerId}")
+    @GetMapping(CUSTOMER_PATH_ID)
     public Customer getCustomerById(@PathVariable("customerId") UUID customerId) {
         log.debug("Get Customer by Id  - In CustomerController");
         return customerService.getCustomerById(customerId);

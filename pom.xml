@@ -96,7 +96,7 @@
 						</path>
 					</annotationProcessorPaths>
 					<compilerArgs>
-						<compilerArgs>-Amapstruct.defaultComponentModel=spring</compilerArgs>
+						<compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
 					</compilerArgs>
 				</configuration>
 			</plugin>

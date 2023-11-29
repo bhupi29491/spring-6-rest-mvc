@@ -82,6 +82,8 @@ class BeerControllerIT {
         assertThat(beer).isNotNull();
     }
 
+    @Transactional
+    @Rollback
     @Test
     void updateExistingBeerTest() {
         Beer beer = beerRepository.findAll().get(0);
@@ -101,5 +103,22 @@ class BeerControllerIT {
     @Test
     void testUpdateNotFound() {
         assertThrows(NotFoundException.class, () -> beerController.updateById(UUID.randomUUID(), BeerDTO.builder().build()));
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    void deleteByIDFound() {
+        Beer beer = beerRepository.findAll().get(0);
+
+        ResponseEntity responseEntity = beerController.deleteById(beer.getId());
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+
+        assertThat(beerRepository.findById(beer.getId())).isEmpty();
+    }
+
+    @Test
+    void testDeleteByIDNotFound() {
+        assertThrows(NotFoundException.class, () -> beerController.deleteById(UUID.randomUUID()));
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,10 +17,35 @@ import java.util.UUID;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private Map<UUID, CustomerDTO> customerMap;
+    private final Map<UUID, CustomerDTO> customerMap;
 
     public CustomerServiceImpl() {
+        this.customerMap = new HashMap<>();
 
+        CustomerDTO customer1 = CustomerDTO.builder()
+                .customerId(UUID.randomUUID())
+                .customerName("Bhupendra Singh")
+                .createdDate(LocalDateTime.now())
+                .lastModifiedDate(LocalDateTime.now())
+                .build();
+
+        CustomerDTO customer2 = CustomerDTO.builder()
+                .customerId(UUID.randomUUID())
+                .customerName("Abhijeet Rawal")
+                .createdDate(LocalDateTime.now())
+                .lastModifiedDate(LocalDateTime.now())
+                .build();
+
+        CustomerDTO customer3 = CustomerDTO.builder()
+                .customerId(UUID.randomUUID())
+                .customerName("Sachin Patil")
+                .createdDate(LocalDateTime.now())
+                .lastModifiedDate(LocalDateTime.now())
+                .build();
+
+        customerMap.put(customer1.getCustomerId(), customer1);
+        customerMap.put(customer2.getCustomerId(), customer2);
+        customerMap.put(customer3.getCustomerId(), customer3);
     }
 
 

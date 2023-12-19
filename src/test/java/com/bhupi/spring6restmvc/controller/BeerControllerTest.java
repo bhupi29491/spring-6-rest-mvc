@@ -1,5 +1,6 @@
 package com.bhupi.spring6restmvc.controller;
 
+import com.bhupi.spring6restmvc.entities.Beer;
 import com.bhupi.spring6restmvc.model.BeerDTO;
 import com.bhupi.spring6restmvc.services.BeerService;
 import com.bhupi.spring6restmvc.services.BeerServiceImpl;
@@ -160,6 +161,20 @@ class BeerControllerTest {
 
         assertThat(beer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
         assertThat(beerMap.get("beerName")).isEqualTo(beerArgumentCaptor.getValue().getBeerName());
+    }
+
+    @Test
+    void testCreateBeerNullBeerName() throws Exception {
+        BeerDTO beer = BeerDTO.builder()
+                .build();
+
+        given(beerService.saveNewBeer(any(BeerDTO.class))).willReturn(beerServiceImpl.listBeers().get(1));
+
+        mockMvc.perform(post(BeerController.BEER_PATH)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(beer)))
+                .andExpect(status().isBadRequest());
     }
 
 }

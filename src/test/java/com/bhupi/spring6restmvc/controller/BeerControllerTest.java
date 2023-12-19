@@ -1,6 +1,5 @@
 package com.bhupi.spring6restmvc.controller;
 
-import com.bhupi.spring6restmvc.entities.Beer;
 import com.bhupi.spring6restmvc.model.BeerDTO;
 import com.bhupi.spring6restmvc.services.BeerService;
 import com.bhupi.spring6restmvc.services.BeerServiceImpl;

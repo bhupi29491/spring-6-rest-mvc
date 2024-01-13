@@ -3,6 +3,8 @@ package com.bhupi.spring6restmvc.services;
 import com.bhupi.spring6restmvc.model.BeerDTO;
 import com.bhupi.spring6restmvc.model.BeerStyle;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -10,7 +12,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,8 +67,8 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public List<BeerDTO> listBeers(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize) {
-        return new ArrayList<>(beerMap.values());
+    public Page<BeerDTO> listBeers(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize) {
+        return new PageImpl<>(new ArrayList<>(beerMap.values()));
     }
 
     @Override
@@ -116,23 +117,23 @@ public class BeerServiceImpl implements BeerService {
     public Optional<BeerDTO> patchBeerById(UUID beerId, BeerDTO beer) {
         BeerDTO existingBeer = beerMap.get(beerId);
 
-        if(StringUtils.hasText(beer.getBeerName())) {
+        if (StringUtils.hasText(beer.getBeerName())) {
             existingBeer.setBeerName(beer.getBeerName());
         }
 
-        if(beer.getBeerStyle() != null) {
+        if (beer.getBeerStyle() != null) {
             existingBeer.setBeerStyle(beer.getBeerStyle());
         }
 
-        if(beer.getPrice() != null) {
+        if (beer.getPrice() != null) {
             existingBeer.setPrice(beer.getPrice());
         }
 
-        if(beer.getQuantityOnHand() != null) {
+        if (beer.getQuantityOnHand() != null) {
             existingBeer.setQuantityOnHand(beer.getQuantityOnHand());
         }
 
-        if(StringUtils.hasText(beer.getUpc())) {
+        if (StringUtils.hasText(beer.getUpc())) {
             existingBeer.setUpc(beer.getUpc());
         }
         return Optional.of(existingBeer);

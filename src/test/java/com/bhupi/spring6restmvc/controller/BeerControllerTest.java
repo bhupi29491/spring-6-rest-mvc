@@ -133,7 +133,7 @@ class BeerControllerTest {
                         .content(objectMapper.writeValueAsString(beer)))
                 .andExpect(status().isNoContent());
 
-        verify(beerService).updateBeerById(any(UUID.class), any(BeerDTO.class));
+        verify(beerService).updateBeerById(any(), any());
     }
 
     @Test

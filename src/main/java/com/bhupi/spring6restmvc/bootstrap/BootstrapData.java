@@ -4,14 +4,12 @@ import com.bhupi.spring6restmvc.entities.Beer;
 import com.bhupi.spring6restmvc.entities.Customer;
 import com.bhupi.spring6restmvc.model.BeerCSVRecord;
 import com.bhupi.spring6restmvc.model.BeerStyle;
-import com.bhupi.spring6restmvc.model.CustomerDTO;
 import com.bhupi.spring6restmvc.repositories.BeerRepository;
 import com.bhupi.spring6restmvc.repositories.CustomerRepository;
 import com.bhupi.spring6restmvc.services.BeerCsvService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
@@ -21,7 +19,6 @@ import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -40,7 +37,7 @@ public class BootstrapData implements CommandLineRunner {
     }
 
     private void loadCsvData() throws FileNotFoundException {
-        if(beerRepository.count() < 10) {
+        if (beerRepository.count() < 10) {
             File file = ResourceUtils.getFile("classpath:csvdata/beers.csv");
 
             List<BeerCSVRecord> records = beerCsvService.convertCSV(file);
@@ -60,11 +57,12 @@ public class BootstrapData implements CommandLineRunner {
                 };
 
                 beerRepository.save(Beer.builder()
-                                .beerName(StringUtils.abbreviate(beerCSVRecord.getBeer(), 50))
-                                .beerStyle(beerStyle)
-                                .price(BigDecimal.TEN)
-                                .upc(beerCSVRecord.getRow().toString())
-                                .quantityOnHand(beerCSVRecord.getCount())
+                        .beerName(StringUtils.abbreviate(beerCSVRecord.getBeer(), 50))
+                        .beerStyle(beerStyle)
+                        .price(BigDecimal.TEN)
+                        .upc(beerCSVRecord.getRow()
+                                .toString())
+                        .quantityOnHand(beerCSVRecord.getCount())
                         .build());
             });
         }
@@ -72,7 +70,7 @@ public class BootstrapData implements CommandLineRunner {
 
     private void loadBeerData() {
 
-        if(beerRepository.count() == 0) {
+        if (beerRepository.count() == 0) {
             Beer beer1 = Beer.builder()
                     .beerName("KARHU")
                     .beerStyle(BeerStyle.ALE)
@@ -112,21 +110,21 @@ public class BootstrapData implements CommandLineRunner {
 
     private void loadCustomerData() {
 
-        if(customerRepository.count() == 0) {
+        if (customerRepository.count() == 0) {
             Customer customer1 = Customer.builder()
-                    .customerName("Bhupendra Singh")
+                    .name("Bhupendra Singh")
                     .createdDate(LocalDateTime.now())
                     .lastModifiedDate(LocalDateTime.now())
                     .build();
 
             Customer customer2 = Customer.builder()
-                    .customerName("Abhijeet Rawal")
+                    .name("Abhijeet Rawal")
                     .createdDate(LocalDateTime.now())
                     .lastModifiedDate(LocalDateTime.now())
                     .build();
 
             Customer customer3 = Customer.builder()
-                    .customerName("Sachin Patil")
+                    .name("Sachin Patil")
                     .createdDate(LocalDateTime.now())
                     .lastModifiedDate(LocalDateTime.now())
                     .build();

@@ -48,19 +48,20 @@ public class CustomerServiceJPA implements CustomerService {
 
         AtomicReference<Optional<CustomerDTO>> atomicReference = new AtomicReference<>();
 
-        customerRepository.findById(customerId).ifPresentOrElse((foundCustomer) -> {
-            foundCustomer.setCustomerName(customer.getCustomerName());
-            atomicReference.set(Optional.of(customerMapper.customerToCustomerDTO(customerRepository.save(foundCustomer))));
-        }, () -> {
-            atomicReference.set(Optional.empty());
-        });
+        customerRepository.findById(customerId)
+                .ifPresentOrElse((foundCustomer) -> {
+                    foundCustomer.setName(customer.getName());
+                    atomicReference.set(Optional.of(customerMapper.customerToCustomerDTO(customerRepository.save(foundCustomer))));
+                }, () -> {
+                    atomicReference.set(Optional.empty());
+                });
 
         return atomicReference.get();
     }
 
     @Override
     public Boolean deleteCustomerById(UUID customerId) {
-        if(customerRepository.existsById(customerId)){
+        if (customerRepository.existsById(customerId)) {
             customerRepository.deleteById(customerId);
             return true;
         }
@@ -71,14 +72,15 @@ public class CustomerServiceJPA implements CustomerService {
     public Optional<CustomerDTO> patchCustomerById(UUID customerId, CustomerDTO customer) {
         AtomicReference<Optional<CustomerDTO>> atomicReference = new AtomicReference<>();
 
-        customerRepository.findById(customerId).ifPresentOrElse((foundCustomer) -> {
-            if(StringUtils.hasText(customer.getCustomerName())) {
-                foundCustomer.setCustomerName(customer.getCustomerName());
-            }
-            atomicReference.set(Optional.of(customerMapper.customerToCustomerDTO(customerRepository.save(foundCustomer))));
-        }, () -> {
-            atomicReference.set(Optional.empty());
-        });
+        customerRepository.findById(customerId)
+                .ifPresentOrElse((foundCustomer) -> {
+                    if (StringUtils.hasText(customer.getName())) {
+                        foundCustomer.setName(customer.getName());
+                    }
+                    atomicReference.set(Optional.of(customerMapper.customerToCustomerDTO(customerRepository.save(foundCustomer))));
+                }, () -> {
+                    atomicReference.set(Optional.empty());
+                });
 
         return atomicReference.get();
     }

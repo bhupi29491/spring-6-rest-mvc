@@ -23,29 +23,29 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerMap = new HashMap<>();
 
         CustomerDTO customer1 = CustomerDTO.builder()
-                .customerId(UUID.randomUUID())
-                .customerName("Bhupendra Singh")
+                .id(UUID.randomUUID())
+                .name("Bhupendra Singh")
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
 
         CustomerDTO customer2 = CustomerDTO.builder()
-                .customerId(UUID.randomUUID())
-                .customerName("Abhijeet Rawal")
+                .id(UUID.randomUUID())
+                .name("Abhijeet Rawal")
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
 
         CustomerDTO customer3 = CustomerDTO.builder()
-                .customerId(UUID.randomUUID())
-                .customerName("Sachin Patil")
+                .id(UUID.randomUUID())
+                .name("Sachin Patil")
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
 
-        customerMap.put(customer1.getCustomerId(), customer1);
-        customerMap.put(customer2.getCustomerId(), customer2);
-        customerMap.put(customer3.getCustomerId(), customer3);
+        customerMap.put(customer1.getId(), customer1);
+        customerMap.put(customer2.getId(), customer2);
+        customerMap.put(customer3.getId(), customer3);
     }
 
 
@@ -63,20 +63,20 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO saveNewCustomer(CustomerDTO customer) {
         CustomerDTO savedCustomer = CustomerDTO.builder()
-                .customerId(UUID.randomUUID())
-                .customerName(customer.getCustomerName())
+                .id(UUID.randomUUID())
+                .name(customer.getName())
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
 
-        customerMap.put(savedCustomer.getCustomerId(), savedCustomer);
+        customerMap.put(savedCustomer.getId(), savedCustomer);
         return savedCustomer;
     }
 
     @Override
     public Optional<CustomerDTO> updateCustomerById(UUID customerId, CustomerDTO customer) {
         CustomerDTO existingCustomer = customerMap.get(customerId);
-        existingCustomer.setCustomerName(customer.getCustomerName());
+        existingCustomer.setName(customer.getName());
 
         return Optional.of(existingCustomer);
     }
@@ -91,8 +91,8 @@ public class CustomerServiceImpl implements CustomerService {
     public Optional<CustomerDTO> patchCustomerById(UUID customerId, CustomerDTO customer) {
         CustomerDTO existingCustomer = customerMap.get(customerId);
 
-        if(StringUtils.hasText(customer.getCustomerName())) {
-            existingCustomer.setCustomerName(customer.getCustomerName());
+        if (StringUtils.hasText(customer.getName())) {
+            existingCustomer.setName(customer.getName());
         }
         return Optional.of(existingCustomer);
     }

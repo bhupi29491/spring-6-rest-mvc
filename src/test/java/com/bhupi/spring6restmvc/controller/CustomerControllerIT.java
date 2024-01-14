@@ -50,9 +50,10 @@ class CustomerControllerIT {
 
     @Test
     void testGetCustomerById() {
-        Customer customer = customerRepository.findAll().get(0);
+        Customer customer = customerRepository.findAll()
+                .get(0);
 
-        CustomerDTO customerDTO = customerController.getCustomerById(customer.getCustomerId());
+        CustomerDTO customerDTO = customerController.getCustomerById(customer.getId());
 
         assertThat(customerDTO).isNotNull();
     }
@@ -67,16 +68,20 @@ class CustomerControllerIT {
     @Test
     void saveNewCustomerTest() {
         CustomerDTO customerDTO = CustomerDTO.builder()
-                .customerName("Neeraj")
+                .name("Neeraj")
                 .build();
 
         ResponseEntity responseEntity = customerController.saveCustomer(customerDTO);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
 
-        String[] customerLocationId = responseEntity.getHeaders().getLocation().getPath().split("/");
+        String[] customerLocationId = responseEntity.getHeaders()
+                .getLocation()
+                .getPath()
+                .split("/");
         UUID savedCustomerUUID = UUID.fromString(customerLocationId[4]);
 
-        Customer customer = customerRepository.findById(savedCustomerUUID).get();
+        Customer customer = customerRepository.findById(savedCustomerUUID)
+                .get();
         assertThat(customer).isNotNull();
     }
 
@@ -84,34 +89,38 @@ class CustomerControllerIT {
     @Rollback
     @Test
     void updateCustomerByIdTest() {
-        Customer customer = customerRepository.findAll().get(0);
+        Customer customer = customerRepository.findAll()
+                .get(0);
         CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-        customerDTO.setCustomerId(null);
+        customerDTO.setId(null);
         final String customerName = "Neeraj";
-        customerDTO.setCustomerName(customerName);
+        customerDTO.setName(customerName);
 
-        ResponseEntity responseEntity = customerController.updateCustomerById(customer.getCustomerId(), customerDTO);
+        ResponseEntity responseEntity = customerController.updateCustomerById(customer.getId(), customerDTO);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
 
-        Customer updatedCustomer = customerRepository.findById(customer.getCustomerId()).get();
-        assertThat(updatedCustomer.getCustomerName()).isEqualTo(customerName);
+        Customer updatedCustomer = customerRepository.findById(customer.getId())
+                .get();
+        assertThat(updatedCustomer.getName()).isEqualTo(customerName);
     }
 
     @Test
     void testUpdateCustomerNotFound() {
-        assertThrows(NotFoundException.class, () -> customerController.updateCustomerById(UUID.randomUUID(), CustomerDTO.builder().build()));
+        assertThrows(NotFoundException.class, () -> customerController.updateCustomerById(UUID.randomUUID(), CustomerDTO.builder()
+                .build()));
     }
 
     @Transactional
     @Rollback
     @Test
     void testDeleteByIdCustomer() {
-        Customer customer = customerRepository.findAll().get(0);
+        Customer customer = customerRepository.findAll()
+                .get(0);
 
-        ResponseEntity responseEntity = customerController.deleteCustomerById(customer.getCustomerId());
+        ResponseEntity responseEntity = customerController.deleteCustomerById(customer.getId());
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
 
-        assertThat(customerRepository.findById(customer.getCustomerId())).isEmpty();
+        assertThat(customerRepository.findById(customer.getId())).isEmpty();
     }
 
     @Test
@@ -123,21 +132,24 @@ class CustomerControllerIT {
     @Rollback
     @Test
     void patchCustomerByIdTest() {
-        Customer customer = customerRepository.findAll().get(0);
+        Customer customer = customerRepository.findAll()
+                .get(0);
         CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-        customerDTO.setCustomerId(null);
+        customerDTO.setId(null);
         final String customerName = "Neeraj";
-        customerDTO.setCustomerName(customerName);
+        customerDTO.setName(customerName);
 
-        ResponseEntity responseEntity = customerController.patchCustomerById(customer.getCustomerId(), customerDTO);
+        ResponseEntity responseEntity = customerController.patchCustomerById(customer.getId(), customerDTO);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
 
-        Customer updatedCustomer = customerRepository.findById(customer.getCustomerId()).get();
-        assertThat(updatedCustomer.getCustomerName()).isEqualTo(customerName);
+        Customer updatedCustomer = customerRepository.findById(customer.getId())
+                .get();
+        assertThat(updatedCustomer.getName()).isEqualTo(customerName);
     }
 
     @Test
     void patchCustomerByIdNotFound() {
-        assertThrows(NotFoundException.class, () -> customerController.patchCustomerById(UUID.randomUUID(), CustomerDTO.builder().build()));
+        assertThrows(NotFoundException.class, () -> customerController.patchCustomerById(UUID.randomUUID(), CustomerDTO.builder()
+                .build()));
     }
 }

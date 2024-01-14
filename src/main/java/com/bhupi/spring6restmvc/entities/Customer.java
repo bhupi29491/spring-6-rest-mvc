@@ -29,8 +29,8 @@ public class Customer {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
-    private UUID customerId;
-    private String customerName;
+    private UUID id;
+    private String name;
 
     @Column(length = 255)
     private String email;
